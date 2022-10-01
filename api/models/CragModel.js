@@ -10,7 +10,7 @@ const CragSchema = new Schema({
         required: true
     },
     boulders: {
-        type: [BoulderModel]
+        type: []
     },
     location: String
 })

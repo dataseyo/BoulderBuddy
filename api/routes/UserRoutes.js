@@ -51,7 +51,8 @@ router.post('/register', (req, res) => {
             const password = req.body.password
             const newUser = new UserModel({
                 username: req.body.username,
-                password: password
+                password: password,
+                boulders: []
             })
 
             await newUser.save() 
@@ -64,11 +65,12 @@ router.post('/register', (req, res) => {
 router.post("/logout", (req, res) => {
     req.session.destroy()
     console.log("logged out")
+    res.end()
 })
 
 // CURRENT USER
 router.get('/currentuser', (req, res) => {
-    if (req.session) {
+    if (req.session.passport) {
         console.log(req.session)
         res.json(req.session.passport)
     } else {
