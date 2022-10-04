@@ -13,7 +13,7 @@ const CragSchema = new Schema({
         type: []
     },
     location: String
-})
+}, { collection: "crags"})
 
 const CragModel = mongoose.model('Crag', CragSchema)
 export default CragModel

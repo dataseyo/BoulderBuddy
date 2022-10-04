@@ -51,6 +51,7 @@ const Signup = (props: Props) => {
         <input
           name="username"
           placeholder="username"
+          type="text"
           className=""
           value={form.username}
           onChange={(e) => onChange(e)}
@@ -59,6 +60,7 @@ const Signup = (props: Props) => {
         <input
           name="password"
           placeholder="password"
+          type="password"
           className=""
           value={form.password}
           onChange={(e) => onChange(e)}

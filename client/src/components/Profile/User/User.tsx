@@ -9,16 +9,9 @@ const User = (props: Props) => {
     const { userState } = useAuthContext()
     const user = JSON.parse(userState as string)
 
-    useEffect(() => {
-        const getBoulders = async () => {
-            axios.get('')
-        }
-    })
-
     return (
         <div>
             <p className="text-light">User: {user?.data.username}</p>
-            
         </div>
     )
 }

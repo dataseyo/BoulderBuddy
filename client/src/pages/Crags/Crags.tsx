@@ -19,7 +19,7 @@ const Crags = (props: Props) => {
       'http://localhost:5000/boulder/add', 
       data,
       {
-      headers: {"Authorization" : `Bearer ${token}`}
+        headers: {"Authorization" : `Bearer ${token}`}
       },
       
     )
