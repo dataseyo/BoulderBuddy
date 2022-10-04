@@ -6,72 +6,47 @@ import UserModel from '../models/UserModel.js'
 
 // VIEW ALL BOULDERS
 export const viewBoulders = (req, res) => {
+    const id = req.user._id
 
+    UserModel.findById(id, function (err, docs) {
+        if (err) { res.status(400).send(err) }
+        res.json(docs.boulders)
+    })
 }
 
 // CREATE NEW BOULDER
 export const createBoulder = async (req, res) => {
-    if (req.session.passport) {
-        const boulder = new BoulderModel({
-            name: "test",
-            grade: 5,
-            crag: "test",
-            id: uuid()
-        })
-        UserModel.findByIdAndUpdate(
-            // id: 
-            req.session.passport.user, 
-            //update: 
-            {
-                $push: {
-                    boulders: {
-                        boulder
-                    }
-                }
-            },
-            // callback
-            (err, result) => {
-                if (err) {
-                    res.send(err)
-                } else {
-                    res.send(result)
-                }
-            }
-        )
-    } else {
-        res.send("Not Logged In")
+    const {name, grade, crag } = req.body
+    const id = req.user._id
+
+    const boulder = {
+        name: name, 
+        grade: grade,
+        crag: crag
     }
 
-    // if (req.session.passport) {
-    //     UserModel.findById(req.session.passport.user, (err, docs) => { 
-    //         if (err) {
-    //             res.send(err)
-    //         } else {
-    //             // const boulder = new BoulderModel({
-    //             //     name: req.body.name,
-    //             //     grade: req.body.grade,
-    //             //     crag: req.body.crag,
-    //             //     id: uuid()
-    //             // })
+    UserModel.findByIdAndUpdate(
+        // id: 
+        id,
+        //update: 
+        {
+            $push: {
+                boulders: {
+                    boulder
+                }
+            }
+        },
+        // callback
+        (err, result) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send(result)
+            }
+        }
+    )
+    
 
-    //             docs.boulders(
-    //                 {$push: {
-    //                     name: "zach"
-    //                 }}
-    //             )
-            
-    //         }
-    //     })
-    // } else {
-    //     res.send("Not Logged In!")
-    // }
-
-    // try {
-    //     BoulderModel.save()
-    //     res.send("New Boulder successfully created.")
-    // } catch (err) {
-    //     console.log(`Error: ${err}`)
-    // }
 }
 
 // DELETE BOULDER

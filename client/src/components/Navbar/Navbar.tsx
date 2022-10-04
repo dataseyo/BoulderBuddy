@@ -1,8 +1,17 @@
 import React from 'react'
 
+import { useAuthContext } from '../../context/AuthContext'
+
 type Props = {}
 
 const Navbar = (props: Props) => {
+  const { updateUser, userState } = useAuthContext()
+
+  const logout = () => {
+    localStorage.removeItem("user")
+    updateUser(null)
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark fixed-top mask-custom shadow-0">
     <div className="container">
@@ -26,12 +35,31 @@ const Navbar = (props: Props) => {
           <li className="nav-item">
             <a className="nav-link" href="/profile">Profile</a>
           </li>
-          <li className="nav-item">
+
+          
+          {
+            !userState && 
+            <><li className="nav-item">
             <a className="nav-link" href="/login">Login</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/signup">Signup</a>
-          </li>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/signup">Signup</a>
+            </li></>
+          }
+
+          {/* check that user is logged in and, if so,
+              display logout button
+          */}
+          {
+            userState && 
+
+            <button 
+            className='btn btn-outline-light'
+            onClick={logout}
+          >
+            Logout
+          </button>
+          }
         </ul>
         <ul className="navbar-nav d-flex flex-row">
           <li className="nav-item me-3 me-lg-0">

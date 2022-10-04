@@ -5,61 +5,19 @@ import session from 'express-session'
 
 import UserModel from '../models/UserModel.js'
 
+
+import { registerUser, loginUser, logoutUser } from '../controllers/UserController.js'
+
 const router = express.Router()
 
 router.get('/', (req, res) => {
-    // session=req.session
-    // if (session.userid) {
-    //     res.send(`Welcome User ${session.userid}`)
-    // } else {
-    //    res.send('Log In') 
-    // }
     res.send("logged")
 })
 
-// LOGIN
-// router.post('/login', (req, res) => {
-//     passport.authenticate('local', {session: false}, (err, user, info) => {
-//             if (err || !user) {
-//                 return res.status(400).json({
-//                     message: 'Something is not right',
-//                     user : user
-//                 });
-//             }
-    
-//     req.login(user, {session: false}, (err) => {
-//                if (err) {
-//                    res.send(err);
-//                }
-//             });
-//         });
-// })
-
-router.post('/login', 
-  passport.authenticate('local', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/user');
-  });
+router.post("/login", loginUser)
 
 // REGISTER
-router.post('/register', (req, res) => {
-    UserModel.findOne({ username: req.body.username }, async (err, doc) => {
-        if  (err) throw err
-        if (doc) res.send("User already exists!")
-        if (!doc) {
-            // need to use bcrypt for password
-            const password = req.body.password
-            const newUser = new UserModel({
-                username: req.body.username,
-                password: password,
-                boulders: []
-            })
-
-            await newUser.save() 
-            res.send("User Created")
-        }
-    })
-})
+router.post('/register', registerUser)
 
 // LOGOUT
 router.post("/logout", (req, res) => {
@@ -78,6 +36,5 @@ router.get('/currentuser', (req, res) => {
     }
     
 })
-
 
 export default router;

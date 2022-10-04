@@ -5,6 +5,7 @@ import passport from 'passport'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import LocalStrategy from 'passport-local'
+import {} from 'dotenv/config'
 
 import BoulderRoutes from './routes/BoulderRoutes.js'
 import UserRoutes from './routes/UserRoutes.js'
@@ -20,11 +21,16 @@ app.listen(PORT, () => {
 
 // MIDDLEWARE
 app.use(express.json())
-app.use(cors())
+
+const corsOptions = {
+    origin: 'http://127.0.0.1:5173',
+    credentials: true
+}
+app.use(cors(corsOptions))
 app.use(cookieParser())
 
 // MONGODB DATABASE CONNECTION
-const CONNECTION_STRING = 'mongodb+srv://gaharaz:18901234@cluster0.moyasce.mongodb.net/?retryWrites=true&w=majority'
+const CONNECTION_STRING = process.env.MONGO_URI
 mongoose.connect(CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -41,50 +47,12 @@ db.on("error", (err) => {
 })
 
 // AUTH
-passport.use(
-    new LocalStrategy((username, password, done) => {
-            UserModel.findOne({username: username}, function(err, user) {
-                if (err) { 
-                    return done(err);
-                  }
-                  if (!user) {
-                    return done(null, false, { message: "Incorrect username" });
-                  }
-                  if (user.password !== password) {
-                    return done(null, false, { message: "Incorrect password" });
-                  }
-                  return done(null, user);
-                
-            })
-    }
-))
 
-const oneDay = 1000 * 60 * 60 * 24
-app.use(
-    session({
-        secret: 'bigsecret',
-        resave: false,
-        saveUninitialized: true,
-        cookie: { maxAge: oneDay }
-    })
-)
 
-app.use(passport.session())
-
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-  
-passport.deserializeUser(function(id, done) {
-    UserModel.findById(id, function(err, user) {
-      done(err, user);
-    });
-  });
 
 // ROUTINGG
 app.use('/user', UserRoutes)
 app.use('/boulder', BoulderRoutes)
 
-app.use(passport.initialize())
 
 
