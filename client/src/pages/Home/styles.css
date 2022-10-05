@@ -1,0 +1,9 @@
+.home {
+    background-image: '../..assets//bgoundtest.jpg';
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.front {
+    z-index: 5;
+}

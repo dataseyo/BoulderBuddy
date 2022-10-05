@@ -1,0 +1,40 @@
+.home-card {
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    max-width: 300px;
+    min-width: 300px;
+    min-height: 250px;
+    padding: 10px;
+    border-radius: 4px;
+    justify-content: space-between;
+
+    background: linear-gradient(
+        135deg,
+        rgba(160, 159, 159, 0.4),
+        rgba(160, 159, 159, 0.2)
+    );
+
+    backdrop-filter: blur(4px);
+}
+
+.home-card h1 {
+    color: white;
+}
+
+.home-card-content {
+    align-self: center;
+}
+
+.home-card-content p {
+    color: white;
+}
+
+.home-card-footer {
+
+}
+
+.home-card-footer p {
+    color: white;
+}
